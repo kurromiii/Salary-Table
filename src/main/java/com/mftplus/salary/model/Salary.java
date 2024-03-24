@@ -1,6 +1,7 @@
 package com.mftplus.salary.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -55,7 +56,9 @@ public class Salary extends Base implements Serializable {
     @Column(name = "insurance")
     private Integer insurance;
 
+
     @Column(name = "year", length = 4)
+    @Size(min = 4,max = 4, message = "incorrect year size")
     private String year;
 
 }

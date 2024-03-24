@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Salary Table</title>
+    <style>
+        .error{
+            color:red;
+        }
+
+        .success{
+            color:green;
+        }
+    </style>
+</head>
+<body>
+<h1>Salary Table</h1>
+<a href="/salary/salaryForm">Add New</a>
+<br><br>
+<!--<h1 th:if="${#lists.size(personList) == 0}">-->
+<!--    No Person-->
+<!--</h1>-->
+<!--th:if="${#lists.size(personList)> 0}"-->
+<table>
+    <thead>
+    <th>Id</th>
+    <th>Basic Hourly Pay</th>
+    <th>Basic Daily Pay</th>
+    <th>Working Coupon</th>
+    <th>Housing Right</th>
+    <th>Working Year Pay</th>
+    <th>Pay For EachChild</th>
+    <th>Married People Rights</th>
+    <th>insurance</th>
+    <th>year</th>
+    <th>Operation</th>
+    </thead>
+
+    <tbody>
+    <tr th:each="s : ${salaryList}">
+        <td th:text="${s.id}"></td>
+        <td th:text="${s.basicHourlyPay}"></td>
+        <td th:text="${s.basicDailyPay}"></td>
+        <td th:text="${s.workingCoupon}"></td>
+        <td th:text="${s.housingRight}"></td>
+        <td th:text="${s.workingYearPay}"></td>
+        <td th:text="${s.payForEachChild}"></td>
+        <td th:text="${s.marriedPeopleRights}"></td>
+        <td th:text="${s.insurance}"></td>
+        <td th:text="${s.year}"></td>
+        <td>
+            <button th:onclick="edit('[[${s.id}]]')">Edit</button>
+
+            <form th:action="@{/salary/delete}" method="post">
+                <label>
+                    <input type="text" name="id" hidden="hidden" th:value="${s.id}">
+                </label>
+                <button type="submit">Delete</button>
+                <div class="success" th:if="${msg != null}">
+                    <span th:text="${msg}"></span>
+                </div>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<script>
+    function edit(id){
+        window.location.replace("/salary/edit?id=" + id);
+    }
+</script>
+</body>
+</html>
