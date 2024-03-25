@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface SalaryRepository extends JpaRepository<Salary,Long> {
@@ -18,5 +19,8 @@ public interface SalaryRepository extends JpaRepository<Salary,Long> {
     void logicalRemove(Long id);
 
     List<Salary> findAllByDeletedFalse();
+
+    Optional<Salary> findByYear(String year);
+
 
 }

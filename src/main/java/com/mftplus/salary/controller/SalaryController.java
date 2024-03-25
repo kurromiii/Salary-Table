@@ -23,7 +23,7 @@ public class SalaryController {
 
     //salary table
     @GetMapping("/salaryTable")
-    public String showPersonList(Model model){
+    public String showSalaryList(Model model){
         log.info("Salary Table - Get");
         try {
             //for th:object="${salary}"
@@ -115,7 +115,7 @@ public class SalaryController {
                 salaryService.logicalRemove(id);
                 log.info("Salary Removed");
                 model.addAttribute("msg", "Salary Removed");
-                return "salaryTable";
+                return "redirect:/salary/salaryTable";
             }
             return "salaryForm";
         } catch (Exception e) {
@@ -123,5 +123,29 @@ public class SalaryController {
             throw new RuntimeException(e);
         }
     }
+
+    //salary year search form
+    @GetMapping(value = "/findByYear")
+    public String searchByYear(@ModelAttribute("year") String year, Model model) {
+        log.info("Salary - Search By Year Page");
+        try {
+            model.addAttribute("salary",new Salary());
+            Optional<Salary> salary = salaryService.findByYear(year);
+            if (salary.isPresent()){
+                model.addAttribute("salaryYear",salary.get());
+                System.out.println(year);
+                System.out.println(salaryService.findByYear(year));
+                return "forward:/salary/salaryTable";
+            }
+            return "salaryTable";
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
+    //todo edit and remove for search
+    //todo unique key violated when saving after setting deleted true
+    //todo th:th tag bug
 
 }

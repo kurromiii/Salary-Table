@@ -45,4 +45,9 @@ public class SalaryServiceImpl implements SalaryService{
     public Optional<Salary> findById(Long id) throws Exception {
         return salaryRepository.findById(id);
     }
+
+    @Override
+    public Optional<Salary> findByYear(String year) throws Exception {
+        return salaryRepository.findByYear(year);
+    }
 }

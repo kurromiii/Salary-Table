@@ -23,17 +23,17 @@
 <!--th:if="${#lists.size(personList)> 0}"-->
 <table>
     <thead>
-    <th>Id</th>
-    <th>Basic Hourly Pay</th>
-    <th>Basic Daily Pay</th>
-    <th>Working Coupon</th>
-    <th>Housing Right</th>
-    <th>Working Year Pay</th>
-    <th>Pay For EachChild</th>
-    <th>Married People Rights</th>
-    <th>insurance</th>
-    <th>year</th>
-    <th>Operation</th>
+    <th:th> Id </th:th>
+    <th:th> BasicHourlyPay </th:th>
+    <th:th> BasicDailyPay </th:th>
+    <th:th> WorkingCoupon </th:th>
+    <th:th> HousingRight </th:th>
+    <th:th> WorkingYearPay </th:th>
+    <th:th> PayForEachChild </th:th>
+    <th:th> MarriedPeopleRights </th:th>
+    <th:th> Insurance </th:th>
+    <th:th> Year </th:th>
+    <th:th> Operation </th:th>
     </thead>
 
     <tbody>
@@ -64,6 +64,60 @@
     </tr>
     </tbody>
 </table>
+<br><br><br><br>
+<form id="salary-year-form" th:action="@{/salary/findByYear}" method="get" th:object="${salary}">
+    <label>
+        Year : <input type="text" th:field="*{year}">
+    </label>
+    <div>
+        <button id="submit" type="submit">Search</button>
+    </div>
+    <div th:if="${not #lists.isEmpty(salaryYear)}">
+    <table>
+        <thead>
+        <th:th> Id </th:th>
+        <th:th> BasicHourlyPay </th:th>
+        <th:th> BasicDailyPay </th:th>
+        <th:th> WorkingCoupon </th:th>
+        <th:th> HousingRight </th:th>
+        <th:th> WorkingYearPay </th:th>
+        <th:th> PayForEachChild </th:th>
+        <th:th> MarriedPeopleRights </th:th>
+        <th:th> Insurance </th:th>
+        <th:th> Year </th:th>
+        <th:th> Operation </th:th>
+        </thead>
+
+        <tbody>
+        <tr th:each="s : ${salaryYear}">
+            <td th:text="${s.id}"></td>
+            <td th:text="${s.basicHourlyPay}"></td>
+            <td th:text="${s.basicDailyPay}"></td>
+            <td th:text="${s.workingCoupon}"></td>
+            <td th:text="${s.housingRight}"></td>
+            <td th:text="${s.workingYearPay}"></td>
+            <td th:text="${s.payForEachChild}"></td>
+            <td th:text="${s.marriedPeopleRights}"></td>
+            <td th:text="${s.insurance}"></td>
+            <td th:text="${s.year}"></td>
+            <td>
+                <button th:onclick="edit('[[${s.id}]]')">Edit</button>
+
+                <form th:action="@{/salary/delete}" method="post">
+                    <label>
+                        <input type="text" name="id" hidden="hidden" th:value="${s.id}">
+                    </label>
+                    <button type="submit">Delete</button>
+                    <div class="success" th:if="${msg != null}">
+                        <span th:text="${msg}"></span>
+                    </div>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    </div>
+</form>
 
 <script>
     function edit(id){

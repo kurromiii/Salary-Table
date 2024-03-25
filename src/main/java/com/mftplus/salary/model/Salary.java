@@ -56,8 +56,7 @@ public class Salary extends Base implements Serializable {
     @Column(name = "insurance")
     private Integer insurance;
 
-
-    @Column(name = "year", length = 4)
+    @Column(name = "year", length = 4, unique = true, nullable = false)
     @Size(min = 4,max = 4, message = "incorrect year size")
     private String year;
 
