@@ -20,7 +20,7 @@ public interface SalaryRepository extends JpaRepository<Salary,Long> {
 
     List<Salary> findAllByDeletedFalse();
 
-    Optional<Salary> findByYear(String year);
+    Optional<Salary> findByYearAndDeletedFalse(String year);
 
 
 }

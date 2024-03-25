@@ -48,6 +48,6 @@ public class SalaryServiceImpl implements SalaryService{
 
     @Override
     public Optional<Salary> findByYear(String year) throws Exception {
-        return salaryRepository.findByYear(year);
+        return salaryRepository.findByYearAndDeletedFalse(year);
     }
 }

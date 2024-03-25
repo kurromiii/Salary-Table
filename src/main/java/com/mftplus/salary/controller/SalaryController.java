@@ -137,7 +137,7 @@ public class SalaryController {
                 System.out.println(salaryService.findByYear(year));
                 return "forward:/salary/salaryTable";
             }
-            return "salaryTable";
+            return "redirect:/salary/salaryTable";
         } catch (Exception e) {
             log.error(e.getMessage());
             throw new RuntimeException(e);
