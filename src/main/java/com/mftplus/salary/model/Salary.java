@@ -18,6 +18,7 @@ import java.io.Serializable;
 @Entity(name = "salaryEntity")
 @Table(name = "salary_tbl")
 public class Salary extends Base implements Serializable {
+    //جدول حقوق سالانه
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "salary_seq")
     @SequenceGenerator(name = "salary_seq")
@@ -31,6 +32,10 @@ public class Salary extends Base implements Serializable {
     //حقوق پایه روزانه
     @Column(name = "basic_daily_pay")
     private Integer basicDailyPay;
+
+    //حقوق پایه ماهانه
+    @Column(name = "basic_monthly_pay")
+    private Integer basicMonthlyPay;
 
     //بن کارگری
     @Column(name = "working_coupon")

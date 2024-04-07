@@ -39,6 +39,12 @@
     <br><br>
 
     <label>
+        Basic Mothly Pay : <input type="text" th:field="*{basicMonthlyPay}">
+    </label>
+    <span class="error" th:if="${#fields.hasErrors('basicMonthlyPay')}" th:errors="*{basicMonthlyPay}">Invalid Basic Monthly Pay</span>
+    <br><br>
+
+    <label>
         Working Coupon : <input type="text" th:field="*{workingCoupon}">
     </label>
     <span class="error" th:if="${#fields.hasErrors('workingCoupon')}" th:errors="*{workingCoupon}">Invalid Working Coupon</span>
