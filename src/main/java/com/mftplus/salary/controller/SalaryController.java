@@ -26,7 +26,7 @@ public class SalaryController {
     public String showSalaryList(Model model){
         log.info("Salary Table - Get");
         try {
-            //for th:object="${salary}"
+//            for th:object="${salary}"
             model.addAttribute("salary", new Salary());
             model.addAttribute("salaryList", salaryService.findAllByDeletedFalse());
             return "salaryTable";
@@ -62,6 +62,7 @@ public class SalaryController {
             salaryService.save(salary);
             log.info("Salary Saved");
             log.info(salary.toString());
+            model.addAttribute("salary", new Salary());
             model.addAttribute("msg", "Salary Saved");
             return "redirect:/salary/salaryTable";
         } catch (Exception e) {
@@ -94,7 +95,6 @@ public class SalaryController {
             if (salary1.isPresent()){
                 salaryService.edit(salary);
                 log.info("Salary Edited");
-                model.addAttribute("salary", salary);
                 model.addAttribute("msg", "Salary Edited");
                 return "redirect:/salary/salaryTable";
             }
@@ -130,11 +130,11 @@ public class SalaryController {
         log.info("Salary - Search By Year Page");
         try {
             model.addAttribute("salary",new Salary());
-            Optional<Salary> salary = salaryService.findByYear(year);
+            Optional<Salary> salary = salaryService.findByYear(Integer.valueOf(year));
             if (salary.isPresent()){
                 model.addAttribute("salaryYear",salary.get());
                 System.out.println(year);
-                System.out.println(salaryService.findByYear(year));
+                System.out.println(salaryService.findByYear(Integer.valueOf(year)));
                 return "forward:/salary/salaryTable";
             }
             return "redirect:/salary/salaryTable";
@@ -144,7 +144,6 @@ public class SalaryController {
         }
     }
 
-    //todo edit and remove for search
     //todo unique key violated when saving after setting deleted true
     //todo th:th tag bug
 

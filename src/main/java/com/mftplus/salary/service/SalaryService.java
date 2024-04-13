@@ -14,6 +14,6 @@ public interface SalaryService {
     List<Salary> findAllByDeletedFalse() throws Exception;
 
     Optional<Salary> findById(Long id) throws Exception;
-    Optional<Salary> findByYear(String year) throws Exception;
+    Optional<Salary> findByYear(Integer year) throws Exception;
 
 }
