@@ -3,6 +3,7 @@ package com.mftplus.salary.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -65,6 +66,7 @@ public class Salary extends Base implements Serializable {
     @Column(name = "year", length = 4, unique = true, nullable = false)
     @Min(1350)
     @Max(1490)
+    @NotNull(message = "fill the field")
     private Integer year;
 
 }

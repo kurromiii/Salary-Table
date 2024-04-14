@@ -15,5 +15,4 @@ public interface SalaryService {
 
     Optional<Salary> findById(Long id) throws Exception;
     Optional<Salary> findByYear(Integer year) throws Exception;
-
 }
