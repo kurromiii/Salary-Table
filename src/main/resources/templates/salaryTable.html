@@ -80,7 +80,7 @@
 <h1 th:if="${#lists.size(salaryList) == 0}">
     No Salary Table
 </h1>
-<table th:if="${#lists.size(salaryList)> 0 && #lists.isEmpty(salaryYear)}">
+<table th:if="${#lists.size(salaryList)> 0 && #lists.isEmpty(salaryYear) && param.year==null}">
     <thead>
     <th> Id </th>
     <th> BasicHourlyPay </th>

@@ -19,8 +19,9 @@ import java.io.Serializable;
 @ToString
 @Entity(name = "salaryEntity")
 @Table(name = "salary_tbl")
-public class Salary extends Base implements Serializable {
+public class Salary implements Serializable {
     //جدول حقوق سالانه
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "salary_seq")
     @SequenceGenerator(name = "salary_seq")
@@ -68,5 +69,8 @@ public class Salary extends Base implements Serializable {
     @Max(1490)
     @NotNull(message = "fill the field")
     private Integer year;
+
+    @Column(name = "salary_deleted")
+    private Boolean deleted = false;
 
 }
