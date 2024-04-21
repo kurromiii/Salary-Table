@@ -1,14 +1,15 @@
-package com.mftplus.salary.service;
+package com.mftplus.salary.service.impl;
 
 import com.mftplus.salary.model.Salary;
 import com.mftplus.salary.repository.SalaryRepository;
+import com.mftplus.salary.service.SalaryService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class SalaryServiceImpl implements SalaryService{
+public class SalaryServiceImpl implements SalaryService {
 
     private final SalaryRepository salaryRepository;
 

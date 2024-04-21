@@ -1,7 +1,7 @@
 package com.mftplus.salary.controller;
 
 import com.mftplus.salary.model.Salary;
-import com.mftplus.salary.service.SalaryServiceImpl;
+import com.mftplus.salary.service.impl.SalaryServiceImpl;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
