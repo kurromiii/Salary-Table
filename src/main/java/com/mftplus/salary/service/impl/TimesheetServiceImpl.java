@@ -1,13 +1,13 @@
 package com.mftplus.salary.service.impl;
 
+import com.mftplus.salary.model.Person;
 import com.mftplus.salary.model.Timesheet;
-import com.mftplus.salary.model.TimesheetPrimaryKeys;
 import com.mftplus.salary.repository.TimesheetRepository;
 import com.mftplus.salary.service.TimesheetService;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class TimesheetServiceImpl implements TimesheetService {
@@ -29,9 +29,10 @@ public class TimesheetServiceImpl implements TimesheetService {
     }
 
     @Override
-    public void logicalRemove(TimesheetPrimaryKeys id) throws Exception {
-        timesheetRepository.logicalRemove(id);
+    public void logicalRemove(Date date, Person person) throws Exception {
+        timesheetRepository.logicalRemove(date,person);
     }
+
 
     @Override
     public List<Timesheet> findAll() throws Exception {
@@ -43,8 +44,8 @@ public class TimesheetServiceImpl implements TimesheetService {
         return timesheetRepository.findAllByDeletedFalse();
     }
 
-    @Override
-    public Optional<Timesheet> findById(TimesheetPrimaryKeys id) throws Exception {
-        return timesheetRepository.findById(id);
-    }
+//    @Override
+//    public Optional<Timesheet> findById(TimesheetPrimaryKeys id) throws Exception {
+//        return timesheetRepository.findById(id);
+//    }
 }

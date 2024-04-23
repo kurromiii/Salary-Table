@@ -7,6 +7,7 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 
 @SuperBuilder
@@ -16,20 +17,27 @@ import java.sql.Timestamp;
 @ToString
 @Entity(name = "timesheetEntity")
 @Table(name = "timesheet_tbl")
+@IdClass(TimesheetPrimaryKeys.class)
 public class Timesheet {
 
     //timesheet
 
     //this table needs two primary keys : 1)person 2)date
-    @EmbeddedId
-    private TimesheetPrimaryKeys id;
+//    @EmbeddedId
+//    private TimesheetPrimaryKeys id;
+    @Id
+    private Date date;
+
+    @Id
+    @ManyToOne
+    private Person employee;
 
     //manager = the one that is responsible for filling this table
     //todo : shouldn't this be of type of user?
-    @ToString.Exclude
-    @ManyToOne
-    @JoinColumn(name = "person_manager_id")
-    private Person manager;
+//    @ToString.Exclude
+//    @ManyToOne
+//    @JoinColumn(name = "person_manager_id")
+//    private Person manager;
 
     //زمان شروع - موظفی
     @Column(name = "regular_time_in")
