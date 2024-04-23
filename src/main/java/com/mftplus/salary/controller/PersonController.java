@@ -8,8 +8,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.List;
 
 @Slf4j
 @Controller
@@ -64,6 +67,26 @@ public class PersonController {
             model.addAttribute("person", new Person());
             model.addAttribute("msg", "Person Saved");
             return "redirect:/person/personTable";
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
+    //person nameAndFamily search form
+    @GetMapping(value = "/findByNameAndFamily")
+    public String findByNameAndFamily(@ModelAttribute("name") String name,@ModelAttribute("family") String family, Model model) {
+        log.info("Person - findByNameAndFamily");
+        try {
+            if(name.isEmpty() && family.isEmpty()){
+                return "forward:/person/personTable";
+            }
+            model.addAttribute("person",new Person());
+            List<Person> personList = personService.findByNameOrFamily(name,family);
+            if (personList != null){
+                model.addAttribute("newPersonList",personList);
+            }
+            return "forward:/timesheet/timesheetForm";
         } catch (Exception e) {
             log.error(e.getMessage());
             throw new RuntimeException(e);

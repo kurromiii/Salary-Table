@@ -46,4 +46,9 @@ public class PersonServiceImpl implements PersonService {
     public Optional<Person> findById(Long id) throws Exception {
         return personRepository.findById(id);
     }
+
+    @Override
+    public List<Person> findByNameOrFamily(String name, String family) throws Exception {
+        return personRepository.findByNameOrFamily(name,family);
+    }
 }

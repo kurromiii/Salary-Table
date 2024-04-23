@@ -18,4 +18,6 @@ public interface PersonRepository extends JpaRepository<Person,Long> {
     void logicalRemove(Long id);
 
     List<Person> findAllByDeletedFalse();
+
+    List<Person> findByNameOrFamily(String name, String family);
 }
