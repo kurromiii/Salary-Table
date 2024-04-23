@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Person Form</title>
+    <style>
+        .error{
+            color:red;
+        }
+
+        .success{
+            color:green;
+        }
+    </style>
+</head>
+<body>
+<h1>Person</h1>
+<form id="person-form" th:fragment="personForm" th:action="@{/person/save}" method="post" th:object="${person}">
+    <label>
+        <input type="text" th:field="*{id}" hidden="hidden">
+    </label>
+
+    <label>
+        name : <input type="text" th:field="*{name}">
+    </label>
+    <span class="error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Invalid Name</span>
+    <br><br>
+
+    <label>
+        Family : <input type="text" th:field="*{family}">
+    </label>
+    <span class="error" th:if="${#fields.hasErrors('family')}" th:errors="*{family}">Invalid Family</span>
+    <br><br>
+
+    <label>
+        Username : <input type="text" th:field="*{username}">
+    </label>
+    <span class="error" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Invalid Basic Daily Pay</span>
+    <br><br>
+
+    <label>
+        Password : <input type="text" th:field="*{password}">
+    </label>
+    <span class="error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Invalid Basic Monthly Pay</span>
+    <br><br>
+
+    <div>
+        <button id="submit" type="submit">Save</button>
+    </div>
+
+    <!--    <div th:if="${param.id != null}">-->
+    <!--        <button type="submit" name="action" value="edit">Edit</button>-->
+    <!--    </div>-->
+
+    <div class="success" th:if="${msg != null}">
+        <span th:text="${msg}"></span>
+    </div>
+
+</form>
+
+</body>
+</html>

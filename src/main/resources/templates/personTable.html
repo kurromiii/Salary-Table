@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Person Table</title>
+    <style>
+        .error{
+            color:red;
+        }
+
+        .success{
+            color:green;
+        }
+    </style>
+</head>
+<body>
+<a href="/person/personForm">Add New</a>
+<br><br>
+
+<h1 th:if="${#lists.size(personList) == 0}">
+    No Person
+</h1>
+<table th:if="${#lists.size(personList)> 0}">
+    <thead>
+    <th> Id </th>
+    <th> name </th>
+    <th> family </th>
+    <th> username </th>
+    <th> password </th>
+    <th> Operation </th>
+    </thead>
+
+    <tbody>
+    <tr th:each="p : ${personList}">
+        <td th:text="${p.id}"></td>
+        <td th:text="${p.name}"></td>
+        <td th:text="${p.family}"></td>
+        <td th:text="${p.username}"></td>
+        <td th:text="${p.password}"></td>
+        <td>
+            <button th:onclick="edit('[[${p.id}]]')">Edit</button>
+
+            <form th:action="@{/person/delete}" method="post">
+                <label>
+                    <input type="text" name="id" hidden="hidden" th:value="${p.id}">
+                </label>
+                <button type="submit">Delete</button>
+                <div class="success" th:if="${msg != null}">
+                    <span th:text="${msg}"></span>
+                </div>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<script>
+    function edit(id){
+        window.location.replace("/person/edit?id=" + id);
+    }
+</script>
+</body>
+</html>
