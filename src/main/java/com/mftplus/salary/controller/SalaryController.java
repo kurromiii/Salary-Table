@@ -15,6 +15,7 @@ import java.util.Optional;
 @Controller
 @RequestMapping("/salary")
 public class SalaryController {
+
     private final SalaryServiceImpl salaryService;
 
     public SalaryController(SalaryServiceImpl salaryService) {
@@ -136,8 +137,6 @@ public class SalaryController {
             Optional<Salary> salary = salaryService.findByYear(Integer.valueOf(year));
             if (salary.isPresent()){
                 model.addAttribute("salaryYear",salary.get());
-                System.out.println(year);
-                System.out.println(salaryService.findByYear(Integer.valueOf(year)));
                 return "forward:/salary/salaryTable";
             }
             return "forward:/salary/salaryTable";
