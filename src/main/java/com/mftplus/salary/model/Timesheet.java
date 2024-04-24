@@ -7,8 +7,8 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
-import java.sql.Date;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 
 @SuperBuilder
 @NoArgsConstructor
@@ -16,28 +16,30 @@ import java.sql.Timestamp;
 @Setter
 @ToString
 @Entity(name = "timesheetEntity")
-@Table(name = "timesheet_tbl")
-@IdClass(TimesheetPrimaryKeys.class)
+@Table(name = "timesheet_tbl",uniqueConstraints = {@UniqueConstraint(columnNames = {"employee_id","t_date"})})
 public class Timesheet {
 
     //timesheet
 
-    //this table needs two primary keys : 1)person 2)date
-//    @EmbeddedId
-//    private TimesheetPrimaryKeys id;
     @Id
-    private Date date;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "timesheet_seq")
+    @SequenceGenerator(name = "timesheet_seq")
+    @Column(name = "id", nullable = false)
+    private Long id;
 
-    @Id
+    @ToString.Exclude
     @ManyToOne
+    @JoinColumn(name = "employee_id")
     private Person employee;
 
+    @Column(name = "t_date")
+    private LocalDate date;
+
     //manager = the one that is responsible for filling this table
-    //todo : shouldn't this be of type of user?
-//    @ToString.Exclude
-//    @ManyToOne
-//    @JoinColumn(name = "person_manager_id")
-//    private Person manager;
+    @ToString.Exclude
+    @ManyToOne
+    @JoinColumn(name = "person_manager_id")
+    private Person manager;
 
     //زمان شروع - موظفی
     @Column(name = "regular_time_in")

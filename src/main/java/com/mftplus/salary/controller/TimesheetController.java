@@ -59,35 +59,77 @@ public class TimesheetController {
 
     //timesheet save
     @PostMapping(value = "/save")
-    public String save(@Valid Timesheet timesheet, BindingResult result, Model model,Person person){
+    public String save(@Valid Timesheet timesheet, BindingResult result, Model model,@ModelAttribute("person")Person person){
         log.info("Timesheet Save - Post");
         if (result.hasErrors()){
             log.error(result.getAllErrors().toString());
             return "timesheetForm";
         }
         try {
-            Long id = person.getId();
-            model.addAttribute("person",personService.findById(id));
+//            Long id = person.getId();
+//            Optional<Person> person1 = personService.findById(id);
+//            person1.ifPresent(timesheet::setEmployee);
+            Date.valueOf(timesheet.getDate());
             timesheetService.save(timesheet);
             log.info("Timesheet Saved");
             model.addAttribute("timesheet", new Timesheet());
             model.addAttribute("msg", "Timesheet Saved");
-            return "redirect:/timesheet/timesheetTable";
+            return "timesheetForm";
         } catch (Exception e) {
             log.error(e.getMessage());
             throw new RuntimeException(e);
         }
     }
 
-    //todo has problem with date
     //timesheet edit form
     @GetMapping(value = "/edit")
-    public String edit(@RequestParam Long id, @RequestParam String date, Model model) {
+    public String showEditForm(@RequestParam Long id, Model model) {
         log.info("Timesheet - Edit Page");
         try {
-            Optional<Timesheet> timesheet = timesheetService.findByDateAndEmployeeId(Date.valueOf(date),id);
+            Optional<Timesheet> timesheet = timesheetService.findById(id);
             model.addAttribute("timesheet",timesheet);
-            return "timesheetForm";
+            return "timesheetEdit";
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
+    //timesheet edit
+    //todo not working
+    @PostMapping(value = "/edit")
+    public String edit(@Valid Timesheet timesheet, Model model){
+        log.info("Timesheet - Edit");
+        try {
+            Long id = timesheet.getId();
+            Optional<Timesheet> timesheet1 = timesheetService.findById(id);
+            if (timesheet1.isPresent()){
+                timesheetService.edit(timesheet);
+                log.info("Timesheet Edited");
+                model.addAttribute("msg", "Timesheet Edited");
+                return "timesheetEdit";
+            }
+            return "timesheetEdit";
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
+    //todo I cant show the error msg it gives 500 error
+    //timesheet logical remove
+    @PostMapping("/delete")
+    public String softDelete(@ModelAttribute("id") Long id, Model model){
+        log.info("Timesheet - Delete");
+        try {
+            Optional<Timesheet> timesheet = timesheetService.findById(id);
+            if (timesheet.isPresent()){
+                timesheetService.logicalRemove(id);
+                log.info("Timesheet Removed");
+                model.addAttribute("msg", "Timesheet Removed");
+                return "timesheetTable";
+            }
+            return "timesheetTable";
         } catch (Exception e) {
             log.error(e.getMessage());
             throw new RuntimeException(e);
@@ -122,7 +164,7 @@ public class TimesheetController {
         try {
             Optional<Person> person = personService.findById(id);
             model.addAttribute("person",person);
-            return "timesheetForm";
+            return "redirect:/timesheet/timesheetForm";
         } catch (Exception e) {
             log.error(e.getMessage());
             throw new RuntimeException(e);

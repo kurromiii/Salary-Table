@@ -7,14 +7,13 @@
 <body>
 <a href="/timesheet/timesheetForm">Add New</a>
 <br><br>
-<h1 th:if="${#lists.size(timesheetList) == 0}">
+<h1 th:if="${#lists.isEmpty(timesheetList)}">
     No Timesheet Table
 </h1>
-<table th:if="${#lists.size(timesheetList)> 0}">
+<table th:if="${not #lists.isEmpty(timesheetList)}">
     <thead>
     <th> date </th>
-    <th> id </th>
-    <th> employeeFamily </th>
+<!--    <th> employeeId </th>-->
 <!--    <th> manager </th>-->
     <th> regularTimeIn </th>
     <th> regularTimeOut </th>
@@ -28,8 +27,7 @@
     <tbody>
     <tr th:each="t : ${timesheetList}">
         <td th:text="${t.date}"></td>
-        <td th:text="${t.employee.id}"></td>
-        <td th:text="${t.employee.family}"></td>
+<!--        <td th:text="${t.employee.id}"></td>-->
 <!--        <td th:text="${t.manager.id}"></td>-->
         <td th:text="${t.regularTimeIn}"></td>
         <td th:text="${t.regularTimeOut}"></td>
@@ -38,11 +36,11 @@
         <td th:text="${t.employeeSignature}"></td>
         <td th:text="${t.managerSignature}"></td>
         <td>
-            <button type="button" th:onclick="edit('[[${t.date}]]','[[${t.employee.id}]]')">Edit</button>
+            <button type="button" th:onclick="edit('[[${t.id}]]')">Edit</button>
 
             <form th:action="@{/timesheet/delete}" method="post">
                 <label>
-                    <input type="text" name="id" hidden="hidden" th:value="${t.date}">
+                    <input type="text" name="id" hidden="hidden" th:value="${t.id}">
                 </label>
                 <button type="submit">Delete</button>
                 <div class="success" th:if="${msg != null}">
@@ -54,8 +52,8 @@
     </tbody>
 </table>
 <script>
-    function edit(date,id){
-        window.location.replace("/timesheet/edit?id=" + id + "&date=" + date);
+    function edit(id){
+        window.location.replace("/timesheet/edit?id=" + id);
     }
 </script>
 </body>

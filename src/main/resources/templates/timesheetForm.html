@@ -27,9 +27,6 @@
     </div>
 </form>
 <br>
-<div class="error" th:if="${msg != null}">
-    <span th:text="${msg}"></span>
-</div>
 <div  th:if="${not #lists.isEmpty(personList)}">
     <table>
         <thead>
@@ -54,11 +51,12 @@
     </table>
 </div>
 <br>
+<a href="/timesheet/timesheetTable">Show all</a>
 <h1>Timesheet</h1>
 <form id="timesheet-form" th:fragment="timesheetForm" th:action="@{/timesheet/save}" method="post" th:object="${timesheet}">
-<!--    <label>-->
-<!--        <input type="text" th:field="*{id}" hidden="hidden">-->
-<!--    </label>-->
+    <label>
+        <input type="text" th:field="*{id}" hidden="hidden">
+    </label>
 
     <label>
         Date : <input type="text" th:field="*{date}">
@@ -66,29 +64,29 @@
 <!--    <span class="error" th:if="${#fields.hasErrors('date')}" th:errors="*{id.date}">Invalid Date</span>-->
     <br><br>
 
-    <label>
-        regularTimeIn : <input type="text" th:field="*{regularTimeIn}">
-    </label>
-    <span class="error" th:if="${#fields.hasErrors('regularTimeIn')}" th:errors="*{regularTimeIn}">Invalid regularTimeIn</span>
-    <br><br>
+<!--    <label>-->
+<!--        regularTimeIn : <input type="text" th:field="*{regularTimeIn}">-->
+<!--    </label>-->
+<!--    <span class="error" th:if="${#fields.hasErrors('regularTimeIn')}" th:errors="*{regularTimeIn}">Invalid regularTimeIn</span>-->
+<!--    <br><br>-->
 
-    <label>
-        regularTimeOut : <input type="text" th:field="*{regularTimeOut}">
-    </label>
-    <span class="error" th:if="${#fields.hasErrors('regularTimeOut')}" th:errors="*{regularTimeOut}">Invalid regularTimeOut</span>
-    <br><br>
+<!--    <label>-->
+<!--        regularTimeOut : <input type="text" th:field="*{regularTimeOut}">-->
+<!--    </label>-->
+<!--    <span class="error" th:if="${#fields.hasErrors('regularTimeOut')}" th:errors="*{regularTimeOut}">Invalid regularTimeOut</span>-->
+<!--    <br><br>-->
 
-    <label>
-        overTimeIn : <input type="text" th:field="*{overTimeIn}">
-    </label>
-    <span class="error" th:if="${#fields.hasErrors('overTimeIn')}" th:errors="*{overTimeIn}">Invalid overTimeIn</span>
-    <br><br>
+<!--    <label>-->
+<!--        overTimeIn : <input type="text" th:field="*{overTimeIn}">-->
+<!--    </label>-->
+<!--    <span class="error" th:if="${#fields.hasErrors('overTimeIn')}" th:errors="*{overTimeIn}">Invalid overTimeIn</span>-->
+<!--    <br><br>-->
 
-    <label>
-        overTimeOut : <input type="text" th:field="*{overTimeOut}">
-    </label>
-    <span class="error" th:if="${#fields.hasErrors('overTimeOut')}" th:errors="*{overTimeOut}">Invalid overTimeOut</span>
-    <br><br>
+<!--    <label>-->
+<!--        overTimeOut : <input type="text" th:field="*{overTimeOut}">-->
+<!--    </label>-->
+<!--    <span class="error" th:if="${#fields.hasErrors('overTimeOut')}" th:errors="*{overTimeOut}">Invalid overTimeOut</span>-->
+<!--    <br><br>-->
 
     <label>
         employeeSignature : <input type="text" th:field="*{employeeSignature}">
@@ -108,7 +106,7 @@
 <!--    <br><br>-->
 
     <label>
-       employee : <input type="text" th:field="*{employee}" th:value="${param.id}">
+       employee : <input type="text" th:field="*{employee}">
     </label>
     <br><br>
 
