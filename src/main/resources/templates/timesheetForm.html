@@ -14,7 +14,7 @@
     </style>
 </head>
 <body>
-<form id="person-find-form" th:action="@{/person/findByNameAndFamily}" method="get" th:object="${person}">
+<form id="person-find-form" th:action="@{/timesheet/findByNameAndFamily}" method="get" th:object="${person}">
     <label>
         Search By employee name : <input type="text" th:field="*{name}">
     </label>
@@ -26,7 +26,10 @@
         <button id="search" type="submit">Search</button>
     </div>
 </form>
-<br><br>
+<br>
+<div class="error" th:if="${msg != null}">
+    <span th:text="${msg}"></span>
+</div>
 <div  th:if="${not #lists.isEmpty(personList)}">
     <table>
         <thead>
@@ -50,7 +53,7 @@
         </tbody>
     </table>
 </div>
-<br><br>
+<br>
 <h1>Timesheet</h1>
 <form id="timesheet-form" th:fragment="timesheetForm" th:action="@{/timesheet/save}" method="post" th:object="${timesheet}">
 <!--    <label>-->
@@ -58,7 +61,7 @@
 <!--    </label>-->
 
     <label>
-        Date : <input type="date" th:field="*{date}">
+        Date : <input type="text" th:field="*{date}">
     </label>
 <!--    <span class="error" th:if="${#fields.hasErrors('date')}" th:errors="*{id.date}">Invalid Date</span>-->
     <br><br>
@@ -105,7 +108,7 @@
 <!--    <br><br>-->
 
     <label>
-       employee : <input type="text" th:field="*{employee}" th:value="${person.id}">
+       employee : <input type="text" th:field="*{employee}" th:value="${param.id}">
     </label>
     <br><br>
 
@@ -122,7 +125,6 @@
     </div>
 
 </form>
-
 <script>
     function select(id){
         window.location.replace("/timesheet/selectPerson?id=" + id);

@@ -16,10 +16,10 @@ import java.sql.Date;
 @NoArgsConstructor
 @SuperBuilder
 public class TimesheetPrimaryKeys implements Serializable {
+
     @Column(name = "work_date")
     private Date date;
 
-    //todo : shouldn't this be of type of user?
     @ManyToOne
     @JoinColumn(name = "person_employee_id")
     private Person employee;

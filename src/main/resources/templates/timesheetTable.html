@@ -13,7 +13,7 @@
 <table th:if="${#lists.size(timesheetList)> 0}">
     <thead>
     <th> date </th>
-    <th> employeeName </th>
+    <th> id </th>
     <th> employeeFamily </th>
 <!--    <th> manager </th>-->
     <th> regularTimeIn </th>
@@ -28,7 +28,7 @@
     <tbody>
     <tr th:each="t : ${timesheetList}">
         <td th:text="${t.date}"></td>
-        <td th:text="${t.employee.name}"></td>
+        <td th:text="${t.employee.id}"></td>
         <td th:text="${t.employee.family}"></td>
 <!--        <td th:text="${t.manager.id}"></td>-->
         <td th:text="${t.regularTimeIn}"></td>
@@ -38,7 +38,7 @@
         <td th:text="${t.employeeSignature}"></td>
         <td th:text="${t.managerSignature}"></td>
         <td>
-            <button th:onclick="edit('[[${t.date}]]')">Edit</button>
+            <button type="button" th:onclick="edit('[[${t.date}]]','[[${t.employee.id}]]')">Edit</button>
 
             <form th:action="@{/timesheet/delete}" method="post">
                 <label>
@@ -53,5 +53,10 @@
     </tr>
     </tbody>
 </table>
+<script>
+    function edit(date,id){
+        window.location.replace("/timesheet/edit?id=" + id + "&date=" + date);
+    }
+</script>
 </body>
 </html>
