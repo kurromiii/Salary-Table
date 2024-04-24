@@ -24,12 +24,20 @@ public class SalaryController {
 
     //salary table
     @GetMapping("/salaryTable")
-    public String showSalaryList(Model model){
+    public String showSalaryList(@ModelAttribute("year") String year,Model model){
         log.info("Salary Table - Get");
         try {
-//            for th:object="${salary}"
             model.addAttribute("salary", new Salary());
-            model.addAttribute("salaryList", salaryService.findAllByDeletedFalse());
+            if (year.isEmpty()){
+                model.addAttribute("salaryList", salaryService.findAllByDeletedFalse());
+            }else {
+                Optional<Salary> salary = salaryService.findByYear(Integer.valueOf(year));
+                if (salary.isPresent()){
+                    model.addAttribute("salaryList",salary.get());
+                }else {
+                    model.addAttribute("msg", "No salary available");
+                }
+            }
             return "salaryTable";
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -119,27 +127,6 @@ public class SalaryController {
                 return "redirect:/salary/salaryTable";
             }
             return "salaryForm";
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            throw new RuntimeException(e);
-        }
-    }
-
-    //salary year search form
-    @GetMapping(value = "/findByYear")
-    public String searchByYear(@ModelAttribute("year") String year, Model model) {
-        log.info("Salary - findByYear");
-        try {
-            if(year.isEmpty()){
-               return "forward:/salary/salaryTable";
-            }
-            model.addAttribute("salary",new Salary());
-            Optional<Salary> salary = salaryService.findByYear(Integer.valueOf(year));
-            if (salary.isPresent()){
-                model.addAttribute("salaryYear",salary.get());
-                return "forward:/salary/salaryTable";
-            }
-            return "forward:/salary/salaryTable";
         } catch (Exception e) {
             log.error(e.getMessage());
             throw new RuntimeException(e);
