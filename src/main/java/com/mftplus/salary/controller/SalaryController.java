@@ -47,7 +47,7 @@ public class SalaryController {
 
     //salary form
     @GetMapping("/salaryForm")
-    public String showForm(Model model) {
+    public String showSaveForm(Model model) {
         log.info("Salary Form - Get");
         try {
             //for th:object="${salary}"
@@ -55,7 +55,7 @@ public class SalaryController {
             return "salaryForm";
         } catch (Exception e) {
             log.error(e.getMessage());
-            throw new RuntimeException(e);
+            return "errorPage";
         }
     }
 
@@ -70,33 +70,33 @@ public class SalaryController {
         try {
             salaryService.save(salary);
             log.info("Salary Saved");
-            log.info(salary.toString());
             model.addAttribute("salary", new Salary());
             model.addAttribute("msg", "Salary Saved");
-            return "redirect:/salary/salaryTable";
+            return "salaryForm";
         } catch (Exception e) {
             log.error(e.getMessage());
-            throw new RuntimeException(e);
+            return "errorPage";
         }
     }
 
     //salary edit form
     @GetMapping(value = "/edit")
-    public String edit(@RequestParam Long id, Model model) {
+    public String showEditForm(@RequestParam Long id, Model model) {
         log.info("Salary - Edit Page");
         try {
             Optional<Salary> salary = salaryService.findById(id);
             model.addAttribute("salary",salary);
-            return "salaryForm";
+            return "salaryEdit";
         } catch (Exception e) {
             log.error(e.getMessage());
-            throw new RuntimeException(e);
+            return "errorPage";
         }
     }
 
+    //todo doesnt show salary edited msg, it shows salary saved msg, why?
     //salary edit
     @PostMapping(value = "/edit")
-    public String editForm(@Valid Salary salary, Model model){
+    public String edit(@Valid Salary salary, Model model){
         log.info("Salary - Edit");
         try {
             Long id = salary.getId();
@@ -105,35 +105,35 @@ public class SalaryController {
                 salaryService.edit(salary);
                 log.info("Salary Edited");
                 model.addAttribute("msg", "Salary Edited");
-                return "redirect:/salary/salaryTable";
+                return "salaryEdit";
             }
-            return "salaryForm";
+            return "salaryEdit";
         } catch (Exception e) {
             log.error(e.getMessage());
-            throw new RuntimeException(e);
+            return "errorPage";
         }
     }
 
+    //todo i cant show the error msg it gives 500 error
     //salary logical remove
     @PostMapping("/delete")
-    public String editForm(@ModelAttribute("id") Long id, Model model){
+    public String softDelete(@ModelAttribute("id") Long id,@ModelAttribute("year") Integer year, Model model){
         log.info("Salary - Delete");
         try {
             Optional<Salary> salary = salaryService.findById(id);
             if (salary.isPresent()){
+                salary.get().setYear(Integer.valueOf(year + id.toString()));
+                salaryService.save(salary.get());
                 salaryService.logicalRemove(id);
                 log.info("Salary Removed");
                 model.addAttribute("msg", "Salary Removed");
-                return "redirect:/salary/salaryTable";
+                return "salaryTable";
             }
-            return "salaryForm";
+            return "salaryTable";
         } catch (Exception e) {
             log.error(e.getMessage());
-            throw new RuntimeException(e);
+            return "errorPage";
         }
     }
-
-    //todo unique key violated when saving after setting deleted true
-    //todo th:th tag bug
 
 }

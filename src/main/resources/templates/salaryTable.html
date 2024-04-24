@@ -68,8 +68,11 @@
                 <label>
                     <input type="text" name="id" hidden="hidden" th:value="${s.id}">
                 </label>
+                <label>
+                    <input type="text" name="year" hidden="hidden" th:value="${s.year}">
+                </label>
                 <button type="submit">Delete</button>
-                <div class="success" th:if="${msg != null}">
+                <div class="error" th:if="${msg != null}">
                     <span th:text="${msg}"></span>
                 </div>
             </form>
