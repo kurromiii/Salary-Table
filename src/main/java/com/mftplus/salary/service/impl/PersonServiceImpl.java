@@ -48,7 +48,8 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public List<Person> findByNameOrFamily(String name, String family) throws Exception {
-        return personRepository.findByNameOrFamily(name,family);
+    public List<Person> findPersonByNameAndLastnameAndDeletedFalse(String name, String lastName) throws Exception {
+        return personRepository.findPersonByNameAndLastnameAndDeletedFalse(name,lastName);
     }
+
 }

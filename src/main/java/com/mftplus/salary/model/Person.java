@@ -25,7 +25,7 @@ public class Person {
     private String name;
 
     @Column(name = "p_family", length = 30)
-    private String family;
+    private String lastname;
 
     @Column(name = "p_username", length = 30 ,unique = true)
     private String username;

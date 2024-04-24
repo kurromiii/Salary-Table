@@ -15,5 +15,5 @@ public interface PersonService {
 
     Optional<Person> findById(Long id) throws Exception;
 
-    List<Person> findByNameOrFamily(String name,String family) throws Exception;
+    List<Person> findPersonByNameAndLastnameAndDeletedFalse(String name , String lastName) throws Exception;
 }
