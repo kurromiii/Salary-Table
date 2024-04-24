@@ -12,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,12 +45,12 @@ public class TimesheetController {
 
     //timesheet form
     @GetMapping("/timesheetForm")
-    public String showForm(@ModelAttribute("name") String name, @ModelAttribute("family") String family, Model model,BindingResult result) {
+    public String showForm(@ModelAttribute("name") String name, @ModelAttribute("lastname") String lastname, Model model) {
         log.info("Timesheet Form - Get");
         try {
             model.addAttribute("timesheet", new Timesheet());
             model.addAttribute("person", new Person());
-            model.addAttribute("personList", personService.findByNameOrFamily(name,family));
+            model.addAttribute("personList", personService.findPersonByNameAndLastnameAndDeletedFalse(name,lastname));
             return "timesheetForm";
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -59,9 +60,10 @@ public class TimesheetController {
 
     //timesheet save
     @PostMapping(value = "/save")
-    public String save(@Valid Timesheet timesheet, BindingResult result, Model model,@ModelAttribute("person")Person person){
+    public String save(@Valid Timesheet timesheet, BindingResult result, Model model){
         log.info("Timesheet Save - Post");
         if (result.hasErrors()){
+            model.addAttribute("person", new Person());
             log.error(result.getAllErrors().toString());
             return "timesheetForm";
         }
@@ -73,6 +75,7 @@ public class TimesheetController {
             timesheetService.save(timesheet);
             log.info("Timesheet Saved");
             model.addAttribute("timesheet", new Timesheet());
+            model.addAttribute("person", new Person());
             model.addAttribute("msg", "Timesheet Saved");
             return "timesheetForm";
         } catch (Exception e) {
@@ -119,11 +122,13 @@ public class TimesheetController {
     //todo I cant show the error msg it gives 500 error
     //timesheet logical remove
     @PostMapping("/delete")
-    public String softDelete(@ModelAttribute("id") Long id, Model model){
+    public String softDelete(@ModelAttribute("id") Long id, @ModelAttribute("date") LocalDate date, Model model){
         log.info("Timesheet - Delete");
         try {
             Optional<Timesheet> timesheet = timesheetService.findById(id);
             if (timesheet.isPresent()){
+                timesheet.get().setDate(date.plusYears(id+1000));
+                timesheetService.save(timesheet.get());
                 timesheetService.logicalRemove(id);
                 log.info("Timesheet Removed");
                 model.addAttribute("msg", "Timesheet Removed");
@@ -137,19 +142,20 @@ public class TimesheetController {
     }
 
     //person nameAndFamily search form
-    @GetMapping(value = "/findByNameAndFamily")
-    public String findByNameAndFamily(@ModelAttribute("name") String name,@ModelAttribute("family") String family, Model model) {
-        log.info("Person - findByNameAndFamily");
+    @GetMapping(value = "/findByNameAndLastname")
+    public String findByNameAndLastname(@ModelAttribute("name") String name,@ModelAttribute("lastname") String lastname, Model model) {
+        log.info("Person - findByNameAndLastname");
         try {
-            if(name.isEmpty() && family.isEmpty()){
-                model.addAttribute("msg", "fill in the blanks");
+            if(name.isEmpty() && lastname.isEmpty()){
+                model.addAttribute("msg1", "fill in the blanks");
             }
             model.addAttribute("person",new Person());
-            List<Person> personList = personService.findByNameOrFamily(name,family);
+            model.addAttribute("timesheet",new Timesheet());
+            List<Person> personList = personService.findPersonByNameAndLastnameAndDeletedFalse(name,lastname);
             if (personList != null){
-                model.addAttribute("newPersonList",personList);
+                model.addAttribute("personList",personList);
             }
-            return "forward:/timesheet/timesheetForm";
+            return "timesheetForm";
         } catch (Exception e) {
             log.error(e.getMessage());
             throw new RuntimeException(e);

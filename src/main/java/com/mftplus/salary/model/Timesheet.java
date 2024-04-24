@@ -1,6 +1,7 @@
 package com.mftplus.salary.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -30,9 +31,11 @@ public class Timesheet {
     @ToString.Exclude
     @ManyToOne
     @JoinColumn(name = "employee_id")
+    @NotNull(message = "please create a person first")
     private Person employee;
 
     @Column(name = "t_date")
+    @NotNull(message = "fill the field")
     private LocalDate date;
 
     //manager = the one that is responsible for filling this table

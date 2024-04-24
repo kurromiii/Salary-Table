@@ -14,16 +14,19 @@
     </style>
 </head>
 <body>
-<form id="person-find-form" th:action="@{/timesheet/findByNameAndFamily}" method="get" th:object="${person}">
+<form id="person-find-form" th:action="@{/timesheet/findByNameAndLastname}" method="get" th:object="${person}">
     <label>
         Search By employee name : <input type="text" th:field="*{name}">
     </label>
     <label>
-        Search By employee family : <input type="text" th:field="*{family}">
+        Search By employee family : <input type="text" th:field="*{lastname}">
     </label>
     <br><br>
     <div>
         <button id="search" type="submit">Search</button>
+    </div>
+    <div class="error" th:if="${msg1 != null}">
+        <span th:text="${msg1}"></span>
     </div>
 </form>
 <br>
@@ -41,7 +44,7 @@
         <tr th:each="p : ${personList}">
             <td th:text="${p.id}"></td>
             <td th:text="${p.name}"></td>
-            <td th:text="${p.family}"></td>
+            <td th:text="${p.lastname}"></td>
             <td th:text="${p.username}"></td>
             <td>
                 <button th:onclick="select('[[${p.id}]]')">Select</button>
@@ -61,7 +64,7 @@
     <label>
         Date : <input type="text" th:field="*{date}">
     </label>
-<!--    <span class="error" th:if="${#fields.hasErrors('date')}" th:errors="*{id.date}">Invalid Date</span>-->
+    <span class="error" th:if="${#fields.hasErrors('date')}" th:errors="*{date}">Invalid Date</span>
     <br><br>
 
 <!--    <label>-->
@@ -108,6 +111,7 @@
     <label>
        employee : <input type="text" th:field="*{employee}">
     </label>
+    <span class="error" th:if="${#fields.hasErrors('employee')}" th:errors="*{employee}">Invalid Employee</span>
     <br><br>
 
     <div>
