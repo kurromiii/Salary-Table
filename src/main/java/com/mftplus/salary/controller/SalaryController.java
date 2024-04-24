@@ -93,7 +93,7 @@ public class SalaryController {
         }
     }
 
-    //todo doesnt show salary edited msg, it shows salary saved msg, why?
+    //todo doesn't show salary edited msg, it shows salary saved msg, why?
     //salary edit
     @PostMapping(value = "/edit")
     public String edit(@Valid Salary salary, Model model){
@@ -114,7 +114,7 @@ public class SalaryController {
         }
     }
 
-    //todo i cant show the error msg it gives 500 error
+    //todo I cant show the error msg it gives 500 error
     //salary logical remove
     @PostMapping("/delete")
     public String softDelete(@ModelAttribute("id") Long id,@ModelAttribute("year") Integer year, Model model){
