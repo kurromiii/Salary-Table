@@ -93,7 +93,7 @@ public class SalaryController {
         }
     }
 
-    //todo doesn't show salary edited msg, it shows salary saved msg, why?
+    //todo why /salary/save works instead of this
     //salary edit
     @PostMapping(value = "/edit")
     public String edit(@Valid Salary salary, Model model){

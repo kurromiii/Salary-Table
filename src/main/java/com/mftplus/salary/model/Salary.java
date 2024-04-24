@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
+import org.springframework.web.context.annotation.ApplicationScope;
 
 import java.io.Serializable;
 
@@ -18,6 +19,7 @@ import java.io.Serializable;
 @ToString
 @Entity(name = "salaryEntity")
 @Table(name = "salary_tbl")
+@ApplicationScope
 public class Salary implements Serializable {
     //جدول حقوق سالانه
 
