@@ -35,7 +35,7 @@ public class TimesheetController {
         log.info("Timesheet Table - Get");
         try {
             model.addAttribute("timesheet", new Timesheet());
-            model.addAttribute("timesheetList", timesheetService.findAllByDeletedFalse());
+            model.addAttribute("timesheetList", timesheetService.findTimesheetByDeletedFalse());
             return "timesheetTable";
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -107,7 +107,7 @@ public class TimesheetController {
             Long id = timesheet.getId();
             Optional<Timesheet> timesheet1 = timesheetService.findById(id);
             if (timesheet1.isPresent()){
-                timesheetService.edit(timesheet);
+                timesheetService.update(timesheet);
                 log.info("Timesheet Edited");
                 model.addAttribute("msg", "Timesheet Edited");
                 return "timesheetEdit";

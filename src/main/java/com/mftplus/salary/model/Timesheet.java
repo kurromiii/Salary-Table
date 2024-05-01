@@ -1,73 +1,81 @@
 package com.mftplus.salary.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.FutureOrPresent;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
-import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @SuperBuilder
+@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString
+
 @Entity(name = "timesheetEntity")
-@Table(name = "timesheet_tbl",uniqueConstraints = {@UniqueConstraint(columnNames = {"employee_id","t_date"})})
+//TODO: Check @UniqueConstraint Because of Refactoring .
+//TODO: java.sql.SQLSyntaxErrorException: ORA-00904: "EMPLOYEE_ID": invalid identifier
+@Table(name = "timesheet_tbl",uniqueConstraints = {@UniqueConstraint(columnNames = {"timesheet_employee","timesheet_date"})})
 public class Timesheet {
-
     //timesheet
-
     @Id
+    @SequenceGenerator(name = "timesheetSeq", sequenceName = "timesheet_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "timesheet_seq")
-    @SequenceGenerator(name = "timesheet_seq")
-    @Column(name = "id", nullable = false)
+    @Column(name = "timesheet_id")
     private Long id;
 
-    @ToString.Exclude
-    @ManyToOne
-    @JoinColumn(name = "employee_id")
-    @NotNull(message = "please create a person first")
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "timesheet_employee")
     private Person employee;
 
-    @Column(name = "t_date")
-    @NotNull(message = "fill the field")
+    @Column(name = "timesheet_date")
+    @FutureOrPresent(message = "Invalid Timesheet Date")
     private LocalDate date;
 
-    //manager = the one that is responsible for filling this table
-    @ToString.Exclude
-    @ManyToOne
-    @JoinColumn(name = "person_manager_id")
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "timesheet_manager")
     private Person manager;
 
     //زمان شروع - موظفی
-    @Column(name = "regular_time_in")
-    private Timestamp regularTimeIn;
+    @Column(name = "timesheet_regular_time_in", columnDefinition = "TIMESTAMP")
+    @FutureOrPresent(message = "Invalid Regular Time In")
+    private LocalDateTime regularTimeIn;
 
     //زمان پایان - موظفی
-    @Column(name = "regular_time_out")
-    private Timestamp regularTimeOut;
+    @Column(name = "timesheet_regular_time_out", columnDefinition = "TIMESTAMP")
+    @FutureOrPresent(message = "Invalid Regular Time Out")
+    private LocalDateTime regularTimeOut;
 
     //زمان شروع - اضافه کاری
-    @Column(name = "over_time_in")
-    private Timestamp overTimeIn;
+    @Column(name = "timesheet_over_time_in", columnDefinition = "TIMESTAMP")
+    @FutureOrPresent(message = "Invalid Over Time In")
+    private LocalDateTime overTimeIn;
 
     //زمان پایان - اضافه کاری
-    @Column(name = "over_time_out")
-    private Timestamp overTimeOut;
+    @Column(name = "timesheet_over_time_out", columnDefinition = "TIMESTAMP")
+    @FutureOrPresent(message = "Invalid Over Time Out")
+    private LocalDateTime overTimeOut;
 
-    //todo : I dont know the required type for signature
-    @Column(name = "employee_signature", unique = true, length = 30)
-    private String employeeSignature;
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "employee_signature")
+    private Attachment employeeSignature;
 
-    @Column(name = "manager_signature", unique = true, length = 30)
-    private String managerSignature;
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "manager_signature")
+    private Attachment managerSignature;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "timesheet_attachment")
+    private List<Attachment> attachments;
 
     @Column(name = "timesheet_deleted")
-    private Boolean deleted = false;
+    private boolean deleted;
+
 
 }

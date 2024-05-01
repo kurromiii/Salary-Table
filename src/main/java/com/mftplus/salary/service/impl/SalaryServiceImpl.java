@@ -1,9 +1,11 @@
 package com.mftplus.salary.service.impl;
 
+import com.mftplus.salary.exceptions.NoContentException;
 import com.mftplus.salary.model.Salary;
 import com.mftplus.salary.repository.SalaryRepository;
 import com.mftplus.salary.service.SalaryService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,44 +13,95 @@ import java.util.Optional;
 @Service
 public class SalaryServiceImpl implements SalaryService {
 
-    private final SalaryRepository salaryRepository;
+    private final SalaryRepository repository;
 
-    public SalaryServiceImpl(SalaryRepository salaryRepository) {
-        this.salaryRepository = salaryRepository;
+    public SalaryServiceImpl(SalaryRepository repository) {
+        this.repository = repository;
     }
 
     @Override
     public void save(Salary salary) throws Exception {
-        salaryRepository.save(salary);
+        repository.save(salary);
     }
 
     @Override
-    public void edit(Salary salary) throws Exception {
-        salaryRepository.save(salary);
+    public void update(Salary salary) throws NoContentException {
+        Optional<Salary> optionalSalary = repository.findSalaryByIdAndDeletedFalse(salary.getId());
+
+        if (optionalSalary.isPresent()) {
+            repository.save(salary);
+        } else {
+            throw new NoContentException("Salary not found !");
+        }
     }
 
+    @Transactional
     @Override
-    public void logicalRemove(Long id) throws Exception {
-        salaryRepository.logicalRemove(id);
+    public void logicalRemove(Long id) throws NoContentException {
+        Optional<Salary> optionalSalary = repository.findSalaryByIdAndDeletedFalse(id);
+        if (optionalSalary.isPresent()) {
+            repository.logicalRemove(id);
+        } else {
+            throw new NoContentException("Salary not found !");
+        }
     }
 
     @Override
     public List<Salary> findAll() throws Exception {
-        return salaryRepository.findAll();
+        return repository.findAll();
     }
 
     @Override
-    public List<Salary> findAllByDeletedFalse() throws Exception {
-        return salaryRepository.findAllByDeletedFalse();
+    public Optional<Salary> findById(Long id) throws NoContentException {
+        Optional<Salary> optional = repository.findById(id);
+        if (optional.isPresent()) {
+            return optional;
+        } else {
+            throw new NoContentException("Salary not found !");
+        }
     }
 
     @Override
-    public Optional<Salary> findById(Long id) throws Exception {
-        return salaryRepository.findById(id);
+    public Long getSalariesCount() {
+        return repository.count();
     }
 
     @Override
-    public Optional<Salary> findByYear(Integer year) throws Exception {
-        return salaryRepository.findByYearAndDeletedFalse(year);
+    public Salary logicalRemoveWithReturn(Long id) throws NoContentException {
+        Optional<Salary> optionalSalary = repository.findSalaryByIdAndDeletedFalse(id);
+
+        if (optionalSalary.isPresent()) {
+            Salary oldSalary = optionalSalary.get();
+            oldSalary.setDeleted(true);
+            return repository.save(oldSalary);
+
+        } else {
+            throw new NoContentException("Salary not found !");
+        }
+    }
+
+    @Override
+    public List<Salary> findSalaryByDeletedFalse() throws Exception {
+        return repository.findSalaryByDeletedFalse();
+    }
+
+    @Override
+    public Optional<Salary> findSalaryByIdAndDeletedFalse(Long id) throws NoContentException{
+        Optional<Salary> optional = repository.findSalaryByIdAndDeletedFalse(id);
+        if (optional.isPresent()) {
+            return optional;
+        } else {
+            throw new NoContentException("Salary not found !");
+        }
+    }
+
+    @Override
+    public Optional<Salary> findSalaryByYearAndDeletedFalse(Integer year) throws NoContentException {
+        Optional<Salary> optional = repository.findSalaryByYearAndDeletedFalse(year);
+        if (optional.isPresent()) {
+            return optional;
+        } else {
+            throw new NoContentException("Salary not found !");
+        }
     }
 }

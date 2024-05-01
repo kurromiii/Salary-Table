@@ -1,18 +1,26 @@
 package com.mftplus.salary.service;
 
+import com.mftplus.salary.exceptions.NoContentException;
 import com.mftplus.salary.model.Salary;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface SalaryService {
     void save(Salary salary) throws Exception;
-    void edit(Salary salary) throws Exception;
-    void logicalRemove(Long id) throws Exception;
+    void update(Salary salary) throws NoContentException;
+
+    @Transactional
+    void logicalRemove(Long id) throws NoContentException;
 
     List<Salary> findAll() throws Exception;
-    List<Salary> findAllByDeletedFalse() throws Exception;
+    Optional<Salary> findById(Long id) throws NoContentException;
+    Long getSalariesCount();
 
-    Optional<Salary> findById(Long id) throws Exception;
-    Optional<Salary> findByYear(Integer year) throws Exception;
+    Salary logicalRemoveWithReturn(Long id) throws NoContentException;
+
+    List<Salary> findSalaryByDeletedFalse() throws Exception;
+    Optional<Salary> findSalaryByIdAndDeletedFalse(Long id) throws NoContentException;
+    Optional<Salary> findSalaryByYearAndDeletedFalse(Integer year) throws NoContentException;
 }
